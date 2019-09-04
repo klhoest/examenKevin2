@@ -8,11 +8,11 @@ import javax.inject.Inject
 
 class ItemRepositoryStub @Inject constructor() : ItemRepository {
 
-    override fun getItemFullList(): Observable<Item> {
+    override fun getItemFullList(): Observable<List<Item>> {
         val itemList = mutableListOf(
                 Item(1, 1, "ananas", "fake1"),
                 Item(1, 2, "abrico", "fake2")
         )
-        return Observable.fromIterable(itemList)
+        return Observable.just(itemList)
     }
 }
