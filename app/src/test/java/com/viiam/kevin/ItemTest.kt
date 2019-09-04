@@ -1,17 +1,26 @@
 package com.viiam.kevin
 
+import io.reactivex.Observable
+import kevin.datasource.ItemApi
+import kevin.datasource.ItemStorage
 import kevin.domain.model.Item
 import kevin.presenter.MainPresenter
+import kevin.repository.ItemRepositoryImpl
 import kevin.repository.ItemRepositoryStub
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.lang.RuntimeException
 
+/**
+ * those are not automatic test (it never fails)
+ * see the console output to assert that it works
+ */
 class ItemTest {
 
     /**
-     * this is not an automatic test (it never fails)
-     * see the console output to assert that it works
+     * ask the presenter to loadFullList
+     * expected : display one item
      */
     @Test
     fun showLoading() {
@@ -28,5 +37,59 @@ class ItemTest {
         }
         var presenter: MainPresenter = MainPresenter(stubView, ItemRepositoryStub())
         presenter.loadFullList()
+    }
+
+    /**
+     * ask repository to getList by accessing storage first, then the network
+     * expected : display a list of one item then a list of two item
+     */
+    @Test
+    fun itemRepositoryImpl() {
+        val storage: ItemStorage = object : ItemStorage {
+            override fun getFullItemList(): List<Item> {
+                val itemList = mutableListOf(
+                        Item(1, 1, "ananas", "fake1")
+                )
+                return itemList
+            }
+        }
+        val api: ItemApi = object : ItemApi {
+            override fun getFullItemList(): Observable<List<Item>> {
+                val itemList = mutableListOf(
+                        Item(1, 1, "ananas", "fake1"),
+                        Item(1, 2, "abrico", "fake2")
+                )
+                return Observable.just(itemList)
+            }
+        }
+        val repo = ItemRepositoryImpl(api, storage)
+        repo.getItemFullList().subscribe { list ->
+            print(list)
+        }
+    }
+
+    /**
+     * ask repository to getList by accessing storage first, then a faulty network
+     * expected : display a list of one item
+     */
+    @Test
+    fun itemRepositoryImplFaultyNetwork() {
+        val storage: ItemStorage = object : ItemStorage {
+            override fun getFullItemList(): List<Item> {
+                val itemList = mutableListOf(
+                        Item(1, 1, "ananas", "fake1")
+                )
+                return itemList
+            }
+        }
+        val api: ItemApi = object : ItemApi {
+            override fun getFullItemList(): Observable<List<Item>> {
+                return Observable.error(RuntimeException("network failed on purpose"))
+            }
+        }
+        val repo = ItemRepositoryImpl(api, storage)
+        repo.getItemFullList().subscribe { list ->
+            print(list)
+        }
     }
 }
