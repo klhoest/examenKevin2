@@ -3,6 +3,7 @@ package com.viiam.kevin
 import io.reactivex.Observable
 import kevin.datasource.ItemApi
 import kevin.datasource.ItemStorage
+import kevin.di.DaggerMainComponent
 import kevin.domain.model.Item
 import kevin.presenter.MainPresenter
 import kevin.repository.ItemRepositoryImpl
@@ -91,5 +92,16 @@ class ItemTest {
         repo.getItemFullList().subscribe { list ->
             print(list)
         }
+    }
+
+    /**
+     * ask a main presenter instantiated with dependency injection to loadFullList
+     * expected : display a list of 2 item
+     */
+    @Test
+    fun presenterDI() {
+        val component = DaggerMainComponent.create()
+        val presenter = component.mainPresenter
+        presenter.loadFullList()
     }
 }
