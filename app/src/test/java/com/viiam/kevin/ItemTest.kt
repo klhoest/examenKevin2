@@ -4,6 +4,8 @@ import io.reactivex.Observable
 import kevin.datasource.ItemApi
 import kevin.datasource.ItemStorage
 import kevin.di.DaggerMainComponent
+import kevin.di.DaggerRealmComponent
+import kevin.di.RealmComponent
 import kevin.domain.model.Item
 import kevin.presenter.MainPresenter
 import kevin.repository.ItemRepositoryImpl
@@ -107,5 +109,16 @@ class ItemTest {
         val component = DaggerMainComponent.create()
         val presenter = component.mainPresenter
         presenter.loadFullList()
+    }
+
+    @Test
+    fun storageWrite() {
+        val component: RealmComponent = DaggerRealmComponent.create()
+        component.itemStorage.fullList = mutableListOf(
+                Item(1, 1, "ananas", "fake1")
+        )
+        print(component.itemStorage.fullList)
+
+
     }
 }

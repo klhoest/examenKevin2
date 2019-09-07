@@ -15,6 +15,7 @@ class ItemRepositoryImpl(val api: ItemApi, val storage: ItemStorage) : ItemRepos
         return Observable.create<List<Item>>(ObservableOnSubscribe { resultEmitter ->
             resultEmitter.onNext(storage.fullList)
             networkObservable.subscribe({ networkList ->
+                storage.fullList = networkList //we update storage with network data
                 resultEmitter.onNext(networkList)
                 resultEmitter.onComplete()
             }, { networkThrowable: Throwable? ->

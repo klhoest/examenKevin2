@@ -7,7 +7,7 @@ import javax.inject.Inject
 /**
  * has android dependency
  */
-class RealmBuilderImpl @Inject constructor() : RealmBuilder {
+class RealmBuilderImpl : RealmBuilder {
 
     init {
         //Realm.init(context)

@@ -6,8 +6,7 @@ import kevin.datasource.ItemStorage;
 import kevin.datasource.ItemStorageImpl;
 import kevin.datasource.storage.RealmBuilder;
 import kevin.datasource.storage.RealmBuilderImpl;
-import kevin.domain.model.repository.ItemRepository;
-import kevin.repository.ItemRepositoryStub;
+import kevin.datasource.storage.RealmBuilderRAM;
 
 @Module
 public class StorageModule {
@@ -20,7 +19,7 @@ public class StorageModule {
     }
 
     @Provides
-    static RealmBuilder provideRealmBuilder() {
-        return new RealmBuilderImpl();
+    RealmBuilder provideRealmBuilder() {
+        return new RealmBuilderRAM();
     }
 }
