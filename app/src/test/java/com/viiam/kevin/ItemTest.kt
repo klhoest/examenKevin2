@@ -19,24 +19,27 @@ import java.lang.RuntimeException
  */
 class ItemTest {
 
+    var stubView: MainPresenter.View = object : MainPresenter.View {
+        override fun showLoading() {
+        }
+
+        override fun hideLoading() {
+        }
+
+        override fun refreshAdapter(list: List<Item>) {
+            System.out.print(list.toString())
+        }
+    }
+
     /**
      * ask the presenter to loadFullList
      * expected : display one item
      */
     @Test
     fun showLoading() {
-        var stubView: MainPresenter.View = object : MainPresenter.View {
-            override fun showLoading() {
-            }
 
-            override fun hideLoading() {
-            }
-
-            override fun refreshAdapter(list: List<Item>) {
-                System.out.print(list.toString())
-            }
-        }
-        var presenter: MainPresenter = MainPresenter(stubView, ItemRepositoryStub())
+        var presenter: MainPresenter = MainPresenter(ItemRepositoryStub())
+        presenter.initWith(stubView)
         presenter.loadFullList()
     }
 
@@ -102,6 +105,7 @@ class ItemTest {
     fun presenterDI() {
         val component = DaggerMainComponent.create()
         val presenter = component.mainPresenter
+        presenter.initWith(stubView)
         presenter.loadFullList()
     }
 }

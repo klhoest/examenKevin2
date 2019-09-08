@@ -1,15 +1,16 @@
 package kevin.ui
 
 import android.content.Context
-import androidx.recyclerview.widget.DiffUtil
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.recyclerview.widget.RecyclerView
+import android.support.v7.widget.AppCompatImageView
+import android.support.v7.widget.AppCompatTextView
+import android.support.v7.widget.RecyclerView
+import com.viiam.feednemo.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import kevin.domain.model.Item
+import kotlinx.android.synthetic.main.item_item.view.*
 
 class ItemAdapter(private var item: MutableList<Item>, private val context: Context) :
         RecyclerView.Adapter<ViewHolder>() {
@@ -30,7 +31,6 @@ class ItemAdapter(private var item: MutableList<Item>, private val context: Cont
 
             Glide.with(context)
                     .load(item[position].thumbnailUrl)
-                    .placeholder(R.drawable.ic_close_black)
                     .override(200, 300)
                     .into(beerImageTextView)
         }

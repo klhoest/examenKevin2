@@ -1,15 +1,14 @@
 package kevin.ui
 
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.viiam.feednemo.R
 import kevin.di.DaggerMainComponent
 import kevin.domain.model.Item
 import kevin.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
-
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.appcompat.app.AppCompatActivity
 
 /*
 import com.example.manuel.baseproject.ui.adapterlist.BeersAdapter
@@ -27,13 +26,15 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         val component = DaggerMainComponent.create()
 
         presenter = component.mainPresenter
+        presenter.initWith(this)
 
-        //observerLiveDatas()
+        initListener()
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.loadFullList()
+    private fun initListener() {
+        refresh.setOnClickListener { _ ->
+            presenter.loadFullList()
+        }
     }
 
     override fun showLoading() {
@@ -45,10 +46,9 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
     }
 
     override fun refreshAdapter(list: List<Item>) {
-        list?.let {
+        list.let {
             recycler_view_item.layoutManager = LinearLayoutManager(this)
-
-            val beersAdapter = ItemAdapter(it.toMutableList(), this)
+            val beersAdapter: ItemAdapter = ItemAdapter(it.toMutableList(), this)
             recycler_view_item.adapter = beersAdapter
             beersAdapter.updateAdapter(it.toMutableList())
 
