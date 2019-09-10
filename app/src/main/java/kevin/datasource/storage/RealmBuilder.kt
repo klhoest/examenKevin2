@@ -1,7 +1,7 @@
 package kevin.datasource.storage
 
-//import io.realm.Realm
+import io.realm.Realm
 
 interface RealmBuilder {
-    //val realm: Realm
+    val realm: Realm
 }

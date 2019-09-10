@@ -50,12 +50,14 @@ class ItemTest {
     @Test
     fun itemRepositoryImpl() {
         val storage: ItemStorage = object : ItemStorage {
-            override fun getFullItemList(): List<Item> {
-                val itemList = mutableListOf(
-                        Item(1, 1, "ananas", "fake1")
-                )
-                return itemList
-            }
+            override var fullList: List<Item>
+                get() {
+                    val itemList = mutableListOf(
+                            Item(1, 1, "ananas", "fake1")
+                    )
+                    return itemList
+                }
+                set(value) {}
         }
         val api: ItemApi = object : ItemApi {
             override fun getFullItemList(): Observable<List<Item>> {
@@ -79,12 +81,14 @@ class ItemTest {
     @Test
     fun itemRepositoryImplFaultyNetwork() {
         val storage: ItemStorage = object : ItemStorage {
-            override fun getFullItemList(): List<Item> {
-                val itemList = mutableListOf(
-                        Item(1, 1, "ananas", "fake1")
-                )
-                return itemList
-            }
+            override var fullList: List<Item>
+                get() {
+                    val itemList = mutableListOf(
+                            Item(1, 1, "ananas", "fake1")
+                    )
+                    return itemList
+                }
+                set(value) {}
         }
         val api: ItemApi = object : ItemApi {
             override fun getFullItemList(): Observable<List<Item>> {

@@ -13,7 +13,7 @@ class ItemRepositoryImpl(val api: ItemApi, val storage: ItemStorage) : ItemRepos
     override fun getItemFullList(): Observable<List<Item>> {
         val networkObservable = api.getFullItemList().retry(2)
         return Observable.create<List<Item>>(ObservableOnSubscribe { resultEmitter ->
-            resultEmitter.onNext(storage.getFullItemList())
+            resultEmitter.onNext(storage.fullList)
             networkObservable.subscribe({ networkList ->
                 resultEmitter.onNext(networkList)
                 resultEmitter.onComplete()
