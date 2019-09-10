@@ -13,6 +13,8 @@ class RealmBuilderImpl @Inject constructor() : RealmBuilder {
         //Realm.init(context)
     }
 
-    override val realm: Realm = Realm.getDefaultInstance()
+    //initialising with Realm.getDefaultInstance() will throw an illegal state exeption on DI
+    override val realm: Realm
+        get() = Realm.getDefaultInstance()
 
 }
