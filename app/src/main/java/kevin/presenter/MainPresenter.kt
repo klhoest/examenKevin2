@@ -3,6 +3,7 @@ package kevin.presenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kevin.domain.model.Item
 import kevin.domain.model.repository.ItemRepository
+import kevin.util.ErrorFormatter
 import javax.inject.Inject
 
 class MainPresenter @Inject constructor(private val itemRepo: ItemRepository) {
@@ -23,7 +24,9 @@ class MainPresenter @Inject constructor(private val itemRepo: ItemRepository) {
                     view!!.hideLoading()
                     view!!.refreshAdapter(list)
                 }, {
-                    //todo
+                    view!!.hideLoading()
+                    val simplifiedError = ErrorFormatter.simplifyError(it)
+                    view!!.showError(simplifiedError)
                 })
     }
 
@@ -35,5 +38,6 @@ class MainPresenter @Inject constructor(private val itemRepo: ItemRepository) {
         fun showLoading()
         fun hideLoading()
         fun refreshAdapter(list: List<Item>)
+        fun showError(error: CharSequence?)
     }
 }

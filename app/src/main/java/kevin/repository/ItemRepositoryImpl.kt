@@ -1,6 +1,7 @@
 package kevin.repository
 
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kevin.datasource.ItemService
 import kevin.datasource.ItemStorage
 import kevin.domain.model.Item
@@ -14,6 +15,13 @@ class ItemRepositoryImpl(val service: ItemService, val storage: ItemStorage) : I
         val networkObservable = service.getFullItemList()
                 .retry(2)
                 .doOnNext { list -> storage.fullList = list }
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext { throwable: Throwable ->
+                    if (storage.fullList.isEmpty())
+                        Observable.error(throwable)
+                    else
+                        Observable.just(storage.fullList)
+                }
 
         return storageObservable.mergeWith(networkObservable)
     }

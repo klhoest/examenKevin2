@@ -13,4 +13,7 @@ class StubMainView : MainPresenter.View {
     override fun refreshAdapter(list: List<Item>) {
         System.out.print(list.toString())
     }
+
+    override fun showError(error: CharSequence?) {
+    }
 }
