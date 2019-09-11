@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
     override fun refreshAdapter(list: List<Item>) {
         list.let {
             recycler_view_item.layoutManager = LinearLayoutManager(this)
-            val beersAdapter: ItemAdapter = ItemAdapter(it.toMutableList(), this)
-            recycler_view_item.adapter = beersAdapter
-            beersAdapter.updateAdapter(it.toMutableList())
+            val itemAdapter: ItemAdapter = ItemAdapter(it.toMutableList(), this)
+            recycler_view_item.adapter = itemAdapter
+            itemAdapter.updateAdapter(it.toMutableList())
 
             recycler_view_item.setHasFixedSize(true)
         }
@@ -75,41 +75,6 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         result.setTitle("Erreur")
         result.setCanceledOnTouchOutside(true)
         return result
-    }
-
-    /*private fun observerLiveDatas() {
-        viewModel.beers.observe(this, Observer(::onBeersReceived))
-        viewModel.isError.observe(this, Observer { onErrorReceived() })
-        viewModel.areEmptyBeers.observe(this, Observer { onEmptyBeersReceived() })
-        viewModel.isLoading.observe(this, Observer(::onLoadingStateReceived))
-    }
-
-    private fun onBeersReceived(beers: List<BeerUI>) {
-        showBeers(beers)
-    }*/
-
-    /*private fun showBeers(beersUI: List<BeerUI>?) {
-        beersUI?.let {
-            recycler_view_beers.layoutManager = LinearLayoutManager(this)
-
-            val beersAdapter = BeersAdapter(it.toMutableList(), this)
-            recycler_view_beers.adapter = beersAdapter
-            beersAdapter.updateAdapter(it.toMutableList())
-
-            recycler_view_beers.setHasFixedSize(true)
-        }
-    }*/
-
-    private fun onErrorReceived() {
-        // do something
-    }
-
-    private fun onEmptyBeersReceived() {
-        // do something
-    }
-
-    private fun onLoadingStateReceived(isLoading: Boolean) {
-        showSpinner(isLoading)
     }
 
     private fun showSpinner(isLoading: Boolean) {

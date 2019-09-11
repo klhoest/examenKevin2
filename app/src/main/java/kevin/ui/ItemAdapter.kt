@@ -37,10 +37,6 @@ class ItemAdapter(private var item: MutableList<Item>, private val context: Cont
     }
 
     fun updateAdapter(updatedList: List<Item>) {
-        /*val result = DiffUtil.calculateDiff(BeersDiffCallback(this.item, updatedList))
-
-        this.item = updatedList.toMutableList()
-        result.dispatchUpdatesTo(this)*/
     }
 }
 
