@@ -1,6 +1,6 @@
 package kevin.presenter
 
-import android.util.Log
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kevin.domain.model.Item
 import kevin.domain.model.repository.ItemRepository
 import javax.inject.Inject
@@ -16,10 +16,15 @@ class MainPresenter @Inject constructor(private val itemRepo: ItemRepository) {
         }
         //we have to put !! since the interpreter consider view as mutable
         view!!.showLoading()
-        itemRepo.getItemFullList().subscribe { list ->
-            view!!.hideLoading()
-            view!!.refreshAdapter(list)
-        }
+        itemRepo.getItemFullList()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list ->
+                    view!!.hideLoading()
+                    view!!.refreshAdapter(list)
+                }, {
+                    //todo
+                })
     }
 
     fun initWith(view: View) {

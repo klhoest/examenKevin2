@@ -4,6 +4,6 @@ import io.reactivex.Observable
 import kevin.domain.model.Item
 
 
-interface ItemApi {
+interface ItemService {
     fun getFullItemList(): Observable<List<Item>>
 }

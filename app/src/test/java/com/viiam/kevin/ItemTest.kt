@@ -1,7 +1,7 @@
 package com.viiam.kevin
 
 import io.reactivex.Observable
-import kevin.datasource.ItemApi
+import kevin.datasource.ItemService
 import kevin.datasource.ItemStorage
 import kevin.di.DaggerMainComponent
 import kevin.domain.model.Item
@@ -10,7 +10,6 @@ import kevin.repository.ItemRepositoryImpl
 import kevin.repository.ItemRepositoryStub
 import org.junit.Test
 
-import org.junit.Assert.*
 import java.lang.RuntimeException
 
 /**
@@ -59,7 +58,7 @@ class ItemTest {
                 }
                 set(value) {}
         }
-        val api: ItemApi = object : ItemApi {
+        val service: ItemService = object : ItemService {
             override fun getFullItemList(): Observable<List<Item>> {
                 val itemList = mutableListOf(
                         Item(1, 1, "ananas", "fake1"),
@@ -68,7 +67,7 @@ class ItemTest {
                 return Observable.just(itemList)
             }
         }
-        val repo = ItemRepositoryImpl(api, storage)
+        val repo = ItemRepositoryImpl(service, storage)
         repo.getItemFullList().subscribe { list ->
             print(list)
         }
@@ -90,12 +89,12 @@ class ItemTest {
                 }
                 set(value) {}
         }
-        val api: ItemApi = object : ItemApi {
+        val service: ItemService = object : ItemService {
             override fun getFullItemList(): Observable<List<Item>> {
                 return Observable.error(RuntimeException("network failed on purpose"))
             }
         }
-        val repo = ItemRepositoryImpl(api, storage)
+        val repo = ItemRepositoryImpl(service, storage)
         repo.getItemFullList().subscribe { list ->
             print(list)
         }
