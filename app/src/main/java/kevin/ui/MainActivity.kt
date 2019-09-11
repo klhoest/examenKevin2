@@ -30,6 +30,11 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         initListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.loadFullList()
+    }
+
     private fun initListener() {
         refresh.setOnClickListener { _ ->
             presenter.loadFullList()
